@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.py[cod]
+run-results/
+quick-results/
+manuscript/
+*.tex
+*.pdf
+cover_letter*
