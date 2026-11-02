@@ -7,3 +7,5 @@ manuscript/
 *.tex
 *.pdf
 cover_letter*
+/optimize_trees
+/optimize_trees.exe

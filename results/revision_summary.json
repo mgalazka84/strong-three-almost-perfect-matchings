@@ -1,0 +1,29 @@
+{
+  "python": "3.12.14",
+  "max_n": 151,
+  "witness_checks": 150,
+  "python_reference_max_n": 31,
+  "python_reference_orders": 30,
+  "additional_allocation_checks": 7038129,
+  "total_allocations_through_60": 8259888,
+  "parity_identity_grid_checks": 128,
+  "separation_polynomial_shift_1000": [
+    523277401,
+    14022543,
+    26499,
+    13
+  ],
+  "spider_integer_checks": 998,
+  "equality_with_F_verified_odd_range": [
+    121,
+    151
+  ],
+  "classification_verified_by_optimizer": false,
+  "failures": 0,
+  "elapsed_seconds": 5.797,
+  "source_sha256": {
+    "verify.py": "b72f96b314db8dbc82b4651d265d9322981919117ea008653149d68512c3987b",
+    "optimize_trees.cpp": "1097cfb1b27349eed36e982788c3a15339e8155ee575f8720ef3afd1a62a3bec",
+    "verify_revision.py": "aa0a015f370557c700786c5b0c13cc4927e6b31c69d2e35b1b4dba5900a474aa"
+  }
+}

@@ -72,8 +72,74 @@ In `tree_enumeration.csv`, a zero in a deficiency-specific column is also used w
 
 Finite checks support the formulas and detect implementation mistakes. They do not prove the infinite extremal statements or establish novelty. The mathematical proofs belong to the separate manuscript.
 
+## Additional checks for the revision
+
+The revision adds an exact optimization over rooted-tree polynomial states,
+covering **all orders from 2 through 151** without generating every tree.
+The reported optimum is over all trees, including both matching deficiencies
+1 and 3. Every row includes a realizing tree encoded by balanced parentheses.
+The root of each witness is a leaf. The optimizer keeps only coefficientwise
+nondominated states at a fixed vertex count: attaching more child trees uses
+only nonnegative sums and products, so this pruning preserves the maximum.
+It does **not** preserve every extremal isomorphism class or count them.
+
+Build with a C++17 compiler. The archived run used GCC 13.3.0; the verification
+driver used Python 3.12.14. After running the original verification command
+above (which creates `run-results`):
+
+```bash
+g++ -O3 -std=c++17 optimize_trees.cpp -o optimize_trees
+./optimize_trees 151 > run-results/tree_optima.csv
+python verify_revision.py --optima run-results/tree_optima.csv --output run-results
+```
+
+The C++ optimization is much more expensive than the original checks; its
+runtime and memory grow with the requested order. It uses exact unsigned
+64-bit integers and enforces `2 <= N <= 301`; the relevant coefficients in
+this range are bounded by the numbers of vertex subsets of size at most 3.
+No polynomial-time complexity claim is made. The state coordinates store the
+two possible coefficients of each polynomial after using parity. The Python
+reference optimizer independently uses all eight coordinates through degree 3.
+
+`verify_revision.py` checks:
+
+- Every recorded witness with the original rooted-tree counting recurrence;
+  deficiency-3 witnesses are also checked with the weighted reduction.
+- Agreement with exhaustive tree enumeration through order 17 and with a
+  separately implemented Python state optimizer through order 31.
+- All 7,038,129 additional five-weight allocations with total 41 through 60,
+  giving **8,259,888 allocations in total** together with the original run.
+- All four parity identities in the integer-balancing table by exact polynomial
+  interpolation, and the cubic separation identity by four-point interpolation.
+- Positivity of all coefficients after substituting `S = 1000 + u` in the
+  separation numerator, certifying its sign for every `u >= 0`.
+- The exact balanced four-spider formula at all 998 feasible odd orders from
+  13 through 2007, and the recurrence on these constructions through order 151.
+- The compact 17-vertex tree with slot weights `(1,1,2,1,3)` and count 26.
+
+Additional recorded files:
+
+| File | Meaning |
+| --- | --- |
+| [`tree_optima.csv`](results/tree_optima.csv) | Exact global maxima through order 151, state counts and one witness per order. |
+| [`small_order_comparison.csv`](results/small_order_comparison.csv) | All odd-order maxima in that range, the polynomial optimum `F`, and the exact positive-arm four-spider maximum. |
+| [`revision_summary.json`](results/revision_summary.json) | New check counts, positivity certificate and source checksums. |
+
+The first tested odd order after the final failure of the identity with `F`
+is **121**: the maxima at 119 and 121 are respectively 11,564 and 12,181,
+whereas `F` gives 11,550 and 12,181. The identity holds at every tested odd
+order from 121 through 151. The claim that the formula **and the complete
+extremal classification** hold for all odd orders at least 121 is a conjecture.
+The proven analytical threshold in the manuscript remains 2007; finite
+optimization of maxima does not establish uniqueness or classify every witness.
+
+The revised manuscript uses weights `(a_1,a_2,h,a_3,a_4)`; they are the same
+ordered arguments called `(a,b,y,c,d)` in `verify.py`. Its Gallai--Edmonds
+sets are `D_0,A_0,C_0`, and its deficiency notation is `def(G)`.
+
 ## License and assistance
 
 The code and recorded outputs are provided under the [MIT License](LICENSE).
 
 The verification code was developed with assistance from ChatGPT (OpenAI).
+
